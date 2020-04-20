@@ -33,10 +33,11 @@ module AwesomeRailsConsole
     def show_rails_env_name_before_prompt
       old_prompt = Pry.config.prompt
 
-      Pry.config.prompt = [
-        proc { |*a| "#{Rails.env.classify} #{old_prompt.first.call(*a)}"  },
-        proc { |*a| "#{Rails.env.classify} #{old_prompt.second.call(*a)}" }
-      ]
+      Pry.config.prompt = Pry::Prompt.new(
+        "custom",
+        "my custom prompt",
+        [proc { |*a| "#{Rails.env.classify} #{old_prompt.prompt_procs.first.call(*a)}"  }, proc { |*a| "#{Rails.env.classify} #{old_prompt.prompt_procs.second.call(*a)}" }]
+      )
     end
   end
 end
